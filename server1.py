@@ -1,5 +1,6 @@
 import socket
 import turtle
+import threading
 
 host = "localhost"
 
@@ -84,20 +85,25 @@ def exit_app():
     sock.close()
 
 """ turtle movement """
-while True:
-    move = conn.recv(1024).decode()
-    if move == "forward": graphic.forward(speed)
-    elif move == "backward": graphic.backward(speed)
-    elif move == "right": graphic.right(rotation)
-    elif move == "left": graphic.left(rotation)
-    elif move == "exit": exit_app()
-    elif move == "size_inc": change_shape(True)
-    elif move == "size_dec": change_shape(False)
-    elif move == "r_color": change_colors(True)
-    elif move == "l_color": change_colors(False)
-    elif move == "pattern_1": pattern_1()
-    elif move == "pattern_2": pattern_2()
-    elif move == "pattern_3": pattern_3()
-    else: exit_app()
+def turtle_movement():
+    while True:
+        move = conn.recv(1024).decode()
+        print(move)
+        if move == "forward": graphic.forward(speed)
+        elif move == "backward": graphic.backward(speed)
+        elif move == "right": graphic.right(rotation)
+        elif move == "left": graphic.left(rotation)
+        elif move == "exit": exit_app()
+        elif move == "size_inc": change_shape(True)
+        elif move == "size_dec": change_shape(False)
+        elif move == "r_color": change_colors(True)
+        elif move == "l_color": change_colors(False)
+        elif move == "pattern_1": pattern_1()
+        elif move == "pattern_2": pattern_2()
+        elif move == "pattern_3": pattern_3()
+        else: exit_app()
 
+thd = threading.Thread(target=turtle_movement, args=(), daemon=True)
+thd.start()
+window.mainloop()
 print("Server closing")
