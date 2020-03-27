@@ -30,6 +30,9 @@ conn, addr = sock.accept()
 print("Server has received a client")
 
 def change_shape(inc):
+    global size
+    global size_limit
+    global graphic
     if inc == True:
         if size + 1 <= size_limit:
             size = size + 1
@@ -41,6 +44,9 @@ def change_shape(inc):
 
 
 def change_colors(inc):
+    global colors
+    global col_pick
+    global graphic
     if inc == True:
         if col_pick < len(colors) - 1:
             col_pick = col_pick + 1
